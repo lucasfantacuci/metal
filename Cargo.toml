@@ -1,5 +1,5 @@
 [package]
-name = "http-metal"
+name = "http_metal"
 version = "0.0.1"
 authors = ["lucas"]
 description = "A fast and simple HTTP server framework for Rust - In Development -"
