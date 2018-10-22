@@ -1,7 +1,6 @@
 
 use std::net::TcpListener;
 use std::io::prelude::*;
-use std::net::TcpStream;
 
 pub struct Metal;
 
