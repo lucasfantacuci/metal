@@ -1,9 +1,9 @@
 
 use std::net::TcpListener;
 
-pub struct Server;
+pub struct Metal;
 
-impl Server {
+impl Metal {
     pub fn listen(address: String) {
         let listener = TcpListener::bind(address).expect("Unable to bind the server into this port");
         for stream in listener.incoming() {
