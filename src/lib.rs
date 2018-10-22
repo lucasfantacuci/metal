@@ -7,6 +7,6 @@ mod tests {
 
     #[test]
     fn bind_port() {
-        Metal::listen(String::from("127.0.0.1:8080"));
+        
     }
 }
