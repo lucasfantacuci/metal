@@ -1,7 +1,12 @@
+pub mod metal;
+
 #[cfg(test)]
 mod tests {
+
+    use metal::Server;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn bind_port() {
+        Server::listen(String::from("127.0.0.1:8080"));
     }
 }
