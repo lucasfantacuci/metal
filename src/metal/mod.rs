@@ -20,7 +20,7 @@ impl Metal {
                 let request = Metal::parse_incomming_message(format!("{}", String::from_utf8_lossy(&buffer[..])));
                 let response = Response;
                 //self.dispatch_to_route(request, response);
-                stream.write(Metal::parse_output_message(response);)
+                stream.write(Metal::parse_output_message(response));
             });
         }
     }
