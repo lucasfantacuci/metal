@@ -1,13 +1,9 @@
 pub fn parse_incomming_message(message: &[u8]) -> super::message::Request {
-        
     let message = String::from_utf8_lossy(message);
-    
     let x = super::message::Request {
-        method: super::http::Method::GET
+        method: super::http::Method::Get
     };
-
     message.lines().for_each(|line| print_message_line(line));
-    
     x
 }
 
