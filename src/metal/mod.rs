@@ -1,4 +1,6 @@
-pub mod http;
+mod http;
+mod message;
+mod parser;
 
 use std::net::TcpListener;
 use std::io::prelude::*;
@@ -18,39 +20,11 @@ impl Metal {
             thread::spawn(move || {
                 let mut buffer: [u8; 2048] = [0; 2048];
                 stream.read(&mut buffer).unwrap();
-                let request = Metal::parse_incomming_message(&buffer[..]);
-                let response = Response;
+                let request = parser::parse_incomming_message(&buffer[..]);
+                let response = message::Response;
                 //self.dispatch_to_route(request, response);
-                stream.write(Metal::parse_output_message(response));
+                stream.write(parser::parse_output_message(response));
             });
         }
     }
-
-    fn parse_incomming_message(message: &[u8]) -> Request {
-        
-        let message = String::from_utf8_lossy(message);
-        
-        let x = Request {
-            method: http::Method::GET
-        };
-
-        message.lines().for_each(|line| print_message_line(line));
-        
-        x
-    }
-
-    fn parse_output_message(response: Response) -> &'static [u8; 98] {
-        b"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n<html><body>Hello world</body></html>\r\n"
-    }
 }
-
-fn print_message_line(string_slice: &str) {
-    println!("{}", string_slice);
-}
-
-pub struct Request {
-    method: http::Method
-}
-
-pub struct Response;
-
