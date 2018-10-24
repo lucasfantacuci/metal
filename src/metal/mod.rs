@@ -21,10 +21,10 @@ impl Metal {
             thread::spawn(move || {
                 let mut buffer: [u8; 2048] = [0; 2048];
                 stream.read(&mut buffer).unwrap();
-                let request = parser::parse_incomming_message(&buffer[..]);
+                let request = parser::incomming_message(&buffer[..]);
                 let response = message::Response;
                 //self.dispatch_to_route(request, response);
-                stream.write(parser::parse_output_message(response));
+                stream.write(parser::output_message(&response));
             });
         }
     }
