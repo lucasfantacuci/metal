@@ -10,7 +10,7 @@ pub enum Method {
     Patch
 }
 
-fn match_method(method: &str) -> Result<Method, &'static str> {
+pub fn match_method(method: &str) -> Result<Method, &'static str> {
     match method {
         "GET" => Ok(Method::Get),
         "HEAD" => Ok(Method::Head),
