@@ -1,5 +1,7 @@
+use super::http::Method;
+
 pub struct Request {
-    pub method: super::http::Method
+    pub method: Method
 }
 
 pub struct Response;

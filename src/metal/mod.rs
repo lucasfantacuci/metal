@@ -21,8 +21,14 @@ impl Metal {
             thread::spawn(move || {
                 let mut buffer: [u8; 2048] = [0; 2048];
                 stream.read(&mut buffer).unwrap();
-                let request = parser::incomming_message(&buffer[..]);
+                let request_parsed = parser::incomming_message(&buffer[..]);
                 let response = message::Response;
+                if request_parsed.is_err() {
+                    // make changes to request and trown message error
+                }else{
+                    //dispatch to proccess the response
+                }
+                
                 //self.dispatch_to_route(request, response);
                 stream.write(parser::output_message(&response));
             });

@@ -1,3 +1,5 @@
+#[allow(dead_code)]
+#[derive(Debug)]
 pub enum Method {
     Get,
     Head,
@@ -10,7 +12,7 @@ pub enum Method {
     Patch
 }
 
-pub fn match_method(method: &str) -> Result<Method, &'static str> {
+pub fn match_method(method: &str) -> Result<Method, String> {
     match method {
         "GET" => Ok(Method::Get),
         "HEAD" => Ok(Method::Head),
@@ -21,7 +23,7 @@ pub fn match_method(method: &str) -> Result<Method, &'static str> {
         "OPTIONS" => Ok(Method::Options),
         "TRACE" => Ok(Method::Trace),
         "PATCH" => Ok(Method::Patch),
-        &_ => Err("Invalid HTTP Method")
+        &_ => Err(String::from("Invalid HTTP Method"))
     }
 }
 
