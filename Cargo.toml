@@ -6,3 +6,4 @@ description = "A fast and simple HTTP server framework for Rust - In Development
 license = "MIT/Apache-2.0"
 
 [dependencies]
+regex = "1"

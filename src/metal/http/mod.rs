@@ -10,6 +10,21 @@ pub enum Method {
     Patch
 }
 
+fn match_method(method: &str) -> Result<Method, &'static str> {
+    match method {
+        "GET" => Ok(Method::Get),
+        "HEAD" => Ok(Method::Head),
+        "POST" => Ok(Method::Post),
+        "PUT" => Ok(Method::Put),
+        "DELETE" => Ok(Method::Delete),
+        "CONNECT" => Ok(Method::Connect),
+        "OPTIONS" => Ok(Method::Options),
+        "TRACE" => Ok(Method::Trace),
+        "PATCH" => Ok(Method::Patch),
+        &_ => Err("Invalid HTTP Method")
+    }
+}
+
 pub enum Status {
     Continue, //100
     SwitchingProtocol, //101
