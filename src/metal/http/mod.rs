@@ -13,7 +13,6 @@ pub enum Method {
 }
 
 pub fn match_method(method: &str) -> Result<Method, String> {
-    println!("{}", method);
     match method {
         "GET" => Ok(Method::Get),
         "HEAD" => Ok(Method::Head),

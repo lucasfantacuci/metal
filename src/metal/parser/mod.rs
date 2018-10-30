@@ -5,8 +5,10 @@ use super::http::{Method, match_method};
 use self::regex::Regex;
 
 pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
-    
+
     let message = String::from_utf8_lossy(message).into_owned();
+
+    println!("{}", message);
 
     let method : Method;
     let path : Path;
@@ -30,8 +32,8 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
         path: path
     };
 
-    println!("HTTP METHOD : {:?} ", request.method);
-    println!("HTTP URL : {} ", request.path.path);
+    println!("HTTP METHOD : {:?} ", &request.method);
+    println!("HTTP URL : {} ", &request.path.path);
 
     Ok(request)
 }
@@ -51,10 +53,13 @@ pub fn parse_http_method(message: &String) -> Result<Method, String> {
 
 pub fn parse_path_called(message: &String) -> Result<Path, String> {
     ///todo: Fix regex bellow, its is throwning an error.
-    let regex = Regex::new(r"\/[a-z0-9\.\/\?\=\&\*\#\@\$\%\{\}\(\)\!\;\,]+").unwrap();
+    let regex = Regex::new(r"//[a-z0-9./?=&*#@$%{}()!;,]+/").unwrap();
     let method = regex.find(message);
     match method {
-        Some(value) => Ok(Path{ path: String::from(value.as_str())}),
+        Some(value) =>  { 
+            println!("inside {}", String::from(value.as_str()));
+            Ok(Path{ path: String::from(value.as_str())})
+        },
         None => Err(String::from("Invalid HTTP Path"))
     }
 }
