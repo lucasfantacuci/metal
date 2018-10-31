@@ -26,10 +26,9 @@ impl Metal {
                 if request_parsed.is_err() {
                     // make changes to request and trown message error
                 }else{
-                    //dispatch to proccess the response
                     //self.dispatch_to_route(request, response);
                 }
-                stream.write(parser::output_message(&response));
+                stream.write(parser::output_message(&response));    
             });
         }
     }
