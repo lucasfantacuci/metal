@@ -8,6 +8,8 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
 
     let message = String::from_utf8_lossy(message).into_owned();
 
+    println!("{}", &message);
+
     let method : Method;
     let path : Path;
 
@@ -25,13 +27,17 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
         return Err(parse_path_called_result.unwrap_err());
     }
 
+    let parse_headers_result = parse_headers(&message);
+    if parse_headers_result.is_ok() {
+        // headers = parse_headers_result.unwrap();
+    } else {
+        return Err(parse_headers_result.unwrap_err());
+    }
+
     let request = Request {
         method: method,
         path: path
     };
-
-    println!("HTTP METHOD : {:?} ", &request.method);
-    println!("HTTP URL : {} ", &request.path.path);
 
     Ok(request)
 }
@@ -57,4 +63,9 @@ pub fn parse_path_called(message: &String) -> Result<Path, String> {
             Ok(Path{ path: String::from(value.as_str())}),
         None => Err(String::from("Invalid HTTP Path"))
     }
+}
+
+pub fn parse_headers(message: &String) -> Result<Path, String> {
+    //[a-zA-Z0-9 -@]+: [a-zA-Z0-9 -@]+     -> Regex for header parsing
+    Err(String::from("Not implemented yet"))
 }
