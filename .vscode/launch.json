@@ -7,20 +7,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'metal'",
+            "name": "Cargo test",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--lib",
-                    "--package=metal"
-                ],
-                "filter": {
-                    "kind": "lib"
-                }
+                    "--lib"
+                ]
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "program": "${cargo:program}",
+            "args": []
         }
     ]
 }
