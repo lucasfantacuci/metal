@@ -8,8 +8,6 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
 
     let message = String::from_utf8_lossy(message).into_owned();
 
-    println!("{}", &message);
-
     let method : Method;
     let path : Path;
 
@@ -66,6 +64,9 @@ pub fn parse_path_called(message: &String) -> Result<Path, String> {
 }
 
 pub fn parse_headers(message: &String) -> Result<Path, String> {
-    //[a-zA-Z0-9 -@]+: [a-zA-Z0-9 -@]+     -> Regex for header parsing
+    let regex = Regex::new(r"[a-zA-Z0-9 -@]+: [a-zA-Z0-9 -@]+").unwrap();
+    for headers_unparsed in regex.find_iter(message){
+        println!(" HEADER {}", headers_unparsed.as_str());
+    }
     Err(String::from("Not implemented yet"))
 }
