@@ -1,6 +1,6 @@
 extern crate regex;
 
-use super::message::{Request, Response, Path};
+use super::message::{Request, Response, Path, Header, Headers};
 use super::http::{Method, match_method};
 use self::regex::Regex;
 
@@ -10,6 +10,7 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
 
     let method : Method;
     let path : Path;
+    let headers : Headers;
 
     let parse_http_method_result = parse_http_method(&message);
     if parse_http_method_result.is_ok() {
@@ -27,15 +28,18 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
 
     let parse_headers_result = parse_headers(&message);
     if parse_headers_result.is_ok() {
-        // headers = parse_headers_result.unwrap();
+        headers = parse_headers_result.unwrap();
     } else {
         return Err(parse_headers_result.unwrap_err());
     }
 
     let request = Request {
         method: method,
-        path: path
+        path: path,
+        headers: headers
     };
+
+    println!("{:?}", request);
 
     Ok(request)
 }
@@ -63,10 +67,21 @@ pub fn parse_path_called(message: &String) -> Result<Path, String> {
     }
 }
 
-pub fn parse_headers(message: &String) -> Result<Path, String> {
-    let regex = Regex::new(r"[a-zA-Z0-9 -@]+: [a-zA-Z0-9 -@]+").unwrap();
-    for headers_unparsed in regex.find_iter(message){
-        println!(" HEADER {}", headers_unparsed.as_str());
+pub fn parse_headers(message: &String) -> Result<Headers, String> {
+    //can improve heards by working with immutable values
+    let mut headers = Headers::default();
+    let regex = Regex::new(r"[ -~]+: [ -~]+").unwrap();
+    for unparsed_header in regex.find_iter(message){
+        let header = parse_header(unparsed_header.as_str());
+        headers.add_header(header);
     }
-    Err(String::from("Not implemented yet"))
+    Ok(headers)
+}
+
+pub fn parse_header(unparsed_header: &str) -> Header {
+    let splited_header : Vec<&str> = unparsed_header.splitn(2, ":").collect();
+    Header {
+        name: String::from(splited_header[0]),
+        value: String::from(splited_header[1])
+    }
 }
