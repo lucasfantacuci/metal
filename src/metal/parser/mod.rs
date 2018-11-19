@@ -1,6 +1,6 @@
 extern crate regex;
 
-use super::message::{Request, Response, Path, Header, Headers};
+use super::message::{Request, Response, Path, Header, Headers, Cookie, Cookies};
 use super::http::{Method, match_method};
 use self::regex::Regex;
 
@@ -11,6 +11,7 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
     let method : Method;
     let path : Path;
     let headers : Headers;
+    let cookies : Cookies;
 
     let parse_http_method_result = parse_http_method(&message);
     if parse_http_method_result.is_ok() {
@@ -33,10 +34,18 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
         return Err(parse_headers_result.unwrap_err());
     }
 
+    let parse_cookies_result = parse_cookies(&message);
+    if parse_cookies_result.is_ok() {
+        cookies = parse_cookies_result.unwrap();
+    } else {
+        return Err(parse_cookies_result.unwrap_err());
+    }
+
     let request = Request {
         method: method,
         path: path,
-        headers: headers
+        headers: headers,
+        cookies: cookies
     };
 
     println!("{:?}", request);
@@ -79,9 +88,14 @@ pub fn parse_headers(message: &String) -> Result<Headers, String> {
 }
 
 pub fn parse_header(unparsed_header: &str) -> Header {
-    let splited_header : Vec<&str> = unparsed_header.splitn(2, ":").collect();
+    let splited_header : Vec<&str> = unparsed_header.splitn(2, ": ").collect();
     Header {
         name: String::from(splited_header[0]),
         value: String::from(splited_header[1])
     }
+}
+
+fn parse_cookies(message: &String) -> Result<Cookies, String> {
+    let mut cookies = Cookies::default();
+    Err(String::from("not implemented"))
 }
