@@ -49,6 +49,7 @@ pub fn incomming_message(message: &[u8]) -> Result<Request, String> {
     };
 
     println!("{:?}", request);
+    println!("\r\n{}\r\n", message);
 
     Ok(request)
 }
@@ -97,5 +98,27 @@ pub fn parse_header(unparsed_header: &str) -> Header {
 
 fn parse_cookies(message: &String) -> Result<Cookies, String> {
     let mut cookies = Cookies::default();
-    Err(String::from("not implemented"))
+    let regex = Regex::new(r"cookie: [ -~]+").unwrap();
+    let cookie_line = regex.find(message);
+    match cookie_line {
+        Some(value) => {
+            let cookie_line = value.as_str();
+            let cookie_line = cookie_line.replace("cookie: ", "");
+            let unparsed_cookies : Vec<&str> = cookie_line.split("; ").collect();
+            for unparsed_cookie in unparsed_cookies.into_iter() {
+                let cookie = parse_cookie(unparsed_cookie);
+                cookies.add_cookie(cookie);
+            }
+            Ok(cookies)
+        }
+        None => Ok(cookies)
+    }
+}
+
+fn parse_cookie(unparsed_cookie: &str) -> Cookie {
+    let splited_cookie : Vec<&str> = unparsed_cookie.splitn(2, "=").collect();
+    Cookie {
+        name: String::from(splited_cookie[0]),
+        value: String::from(splited_cookie[1])
+    }
 }
