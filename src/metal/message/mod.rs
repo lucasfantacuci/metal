@@ -1,4 +1,5 @@
 use super::http::Method;
+use super::http::Status;
 
 #[derive(Debug)]
 pub struct Request {
@@ -8,7 +9,20 @@ pub struct Request {
     pub cookies: Cookies
 }
 
-pub struct Response;
+#[derive(Debug)]
+pub struct Response {
+    pub status : Status,
+    pub headers: Headers
+}
+
+impl Default for Response {
+    fn default() -> Response {
+        Response {
+            status : Status::Ok,
+            headers : Headers::default()
+        }
+    }
+}
 
 #[derive(Debug)]
 pub struct Path {

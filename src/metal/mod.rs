@@ -22,7 +22,7 @@ impl Metal {
                 let mut buffer: [u8; 2048] = [0; 2048];
                 stream.read(&mut buffer).unwrap();
                 let request_parsed = parser::incomming_message(&buffer[..]);
-                let response = message::Response;
+                let response = message::Response::default();
                 if request_parsed.is_err() {
                     // make changes to request and trown message error
                 }else{

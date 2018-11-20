@@ -28,6 +28,7 @@ pub fn match_method(method: &str) -> Result<Method, String> {
 }
 
 #[allow(dead_code)]
+#[derive(Debug)]
 pub enum Status {
     Continue, //100
     SwitchingProtocol, //101
